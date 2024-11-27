@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Список заявок:</h2>
+<form method="get" action="/orders">
+    <div class="input-field">
+        <input type="text" list="client_names" id="search_company" name="search_company" value="{{ search_company }}" class="validate">
+        <datalist id="client_names">
+            {% for client_name in client_names %}
+                <option value="{{ client_name }}"></option>
+            {% endfor %}
+        </datalist>
+        <label for="search">Имя компании</label>
+    </div>
+    <div class="input-field">
+        <input type="text" list="product_names" id="search_product" name="search_product" value="{{ search_product }}" class="validate">
+        <datalist id="product_names">
+            {% for product_name in product_names %}
+                <option value="{{ product_name }}"></option>
+            {% endfor %}
+        </datalist>
+        <label for="search">Наименование товара</label>
+    </div>
+    <button class="btn waves-effect waves-light" type="submit" name="action">Найти</button>
+</form>
+<table class="striped">
+    <thead>
+        <tr>
+            <th>Продукт</th>
+            <th>Заказчик</th>
+            <th>Количество</th>
+            <th>Статус заявки</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for order in orders %}
+        <tr>
+            <td><a href="/products?search={{ order[1] }}&action=">{{ order[1] }}</a></td>
+            <td><a href="http://127.0.0.1:5000/clients?search={{ order[2] }}&action=">{{ order[2] }}</a></td>
+            <td>{{ order[3] }}</td>
+            <td>{{ order[4] }}</td>
+            <td>
+                <form method="post" action="/delete_order/{{ order[0] }}" style="display:inline;">
+                    <button class="btn waves-effect waves-light red" type="submit">Удалить</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

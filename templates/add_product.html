@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Добавление товара</h2>
+<form method="post" action="/add_product">
+    <div class="input-field">
+        <input type="text" id="name" name="name" class="validate" required>
+        <label for="name">Наименование</label>
+    </div>
+    <div class="input-field">
+        <input type="text" id="manufacturer" name="manufacturer" class="validate" required>
+        <label for="manufacturer">Производитель</label>
+    </div>
+    <div class="input-field">
+        <input type="number" id="weight" min="1" name="weight" class="validate" required>
+        <label for="weight">Вес (граммы)</label>
+    </div>
+    <div class="input-field">
+        <input type="number" id="price" min="1" name="price" class="validate" required>
+        <label for="price">Цена (тенге)</label>
+    </div>
+    <div class="input-field">
+        <input type="number" id="quantity" min="1" name="quantity" class="validate" required>
+        <label for="quantity">Количество на складе</label>
+    </div>
+    <div class="input-field">
+        <input type="text" id="photo_url" name="photo_url" class="validate" required>
+        <label for="photo_url">URL фотографии</label>
+    </div>
+    <button class="btn waves-effect waves-light" type="submit" name="action">Добавить продукт</button>
+</form>
+{% endblock %}

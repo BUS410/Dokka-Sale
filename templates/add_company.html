@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Добавление предприятия</h2>
+<form method="post" action="/add_company">
+    <div class="input-field">
+        <input type="text" id="company_name" name="company_name" class="validate" required>
+        <label for="company_name">Название предприятия</label>
+    </div>
+    <div class="input-field">
+        <input type="text" id="address" name="address" class="validate" required>
+        <label for="address">Адрес предприятия</label>
+    </div>
+    <div class="input-field">
+        <input type="tel" id="contact_number" name="contact_number" class="validate" required>
+        <label for="contact_number">Контактный номер предприятия</label>
+    </div>
+    <button class="btn waves-effect waves-light" type="submit" name="action">Добавить</button>
+</form>
+{% endblock %}

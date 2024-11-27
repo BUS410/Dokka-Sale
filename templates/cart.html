@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Корзина</h2>
+<form method="post" action="/cart">
+    <div class="input-field">
+        <input required type="text" list="client_names" id="client" name="client" class="autocomplete" autocomplete="off">
+        <datalist id="client_names">
+            {% for client_name in client_names %}
+                <option value="{{ client_name }}"></option>
+            {% endfor %}
+        </datalist>
+        <label for="client">Выберите клиента</label>
+    </div>
+    <table class="striped">
+        <thead>
+            <tr>
+                <th>Товар</th>
+                <th>Количество</th>
+                <th>Цена</th>
+            </tr>
+        </thead>
+        <tbody id="product-table">
+            <tr>
+                <td>
+                    <input placeholder="Выберите товар" required type="text" list="product_names" id="product1" name="product" class="autocomplete-product" autocomplete="off"  onchange="set_price(1)">
+                </td>
+                <td>
+                    <input required id="quantity1" type="number" name="quantity" min="1" value="1" onchange="set_price(1)">
+                </td>
+                <td>
+                    <span id="price1" class="prices"></span>
+                </td>
+            </tr>
+        </tbody>
+
+        <datalist id="product_names">
+            {% for product_name in product_names %}
+                <option value="{{ product_name }}"></option>
+            {% endfor %}
+        </datalist>
+    </table>
+    <div>
+        <button class="btn waves-effect waves-light" type="button" onclick="addProductRow()">Добавить товар</button>
+        <button class="btn waves-effect waves-light red" type="button" onclick="deleteProductRow()">Убрать товар</button>
+        <p align="right">Общая цена: <span id="total-price">0</span> тг.</p>
+    </div>
+    <button class="btn waves-effect waves-light" type="submit" name="action">Оформить заказ</button>
+</form>
+<script type="text/javascript">
+    // Функция для добавления новой строки с выбором товара
+    var productCounter = 1;
+    function addProductRow() {
+        var productTable = document.getElementById("product-table");
+        var newRow = document.createElement("tr");
+        productCounter++;
+        newRow.innerHTML = `
+            <td>
+                <input placeholder="Выберите товар" type="text" list="product_names" id="product`+ productCounter +`" name="product" class="autocomplete-product" autocomplete="off"   onchange="set_price(`+ productCounter +`)">
+            </td>
+            <td>
+                <input id="quantity`+ productCounter +`" type="number" name="quantity" min="1" value="1" onchange="set_price(`+ productCounter +`)">
+            </td>
+            <td>
+                <span id="price`+ productCounter +`" class="prices"></span>
+            </td>
+        `;
+        productTable.appendChild(newRow);
+    };
+
+    // Функция установки цены
+    var product_prices = {{ product_prices | safe }};
+    function set_price(row) {
+        document.getElementById("price" + row).innerHTML = product_prices[document.getElementById("product" + row).value] * document.getElementById("quantity" + row).value;
+
+        var sum = 0;
+        var prices = document.getElementsByClassName("prices");
+        for (var i = 0; i < prices.length; i++) {
+            sum += parseInt(prices[i].innerHTML);
+        };
+        document.getElementById("total-price").innerHTML = sum;
+    }
+
+    // Функция удаления последней строки продукта
+    function deleteProductRow() {
+        var productTable = document.getElementById("product-table");
+        if (productTable.rows.length > 1) {
+          productTable.deleteRow(-1);
+        }
+    }
+</script>
+{% endblock %}
